@@ -19,8 +19,6 @@ rrdtool graph /var/www/assets/mcsoh/images/${sta}_ChargeState_graph.png \
 --lower-limit 0 \
 --right-axis 1:0 \
 --color CANVAS#000000 \
---color FONT#FFFFFF \
---color BACK#000000 \
 DEF:Charge_State=/var/www/rrd/${sta}_mppt.rrd:Charge_State:AVERAGE \
 COMMENT:"BULK CHARGE-The battery is not at 100% state of charge and battery voltage has not yet charged to the\n" \
 COMMENT:"Absorption voltage setpoint. The controller will deliver 100% of available solar power to recharge\n" \

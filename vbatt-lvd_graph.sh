@@ -19,8 +19,6 @@ rrdtool graph /var/www/assets/mcsoh/images/${sta}_vbatt-lvd_graph.png \
 --lower-limit 0 \
 --right-axis 1:0 \
 --color CANVAS#000000 \
---color FONT#FFFFFF \
---color BACK#000000 \
 DEF:Adc_vb_f=/var/www/rrd/${sta}_mppt.rrd:Adc_vb_f:AVERAGE \
 DEF:Adc_va_f=/var/www/rrd/${sta}_mppt.rrd:Adc_va_f:AVERAGE \
 DEF:V_lvd=/var/www/rrd/${sta}_mppt.rrd:V_lvd:AVERAGE \

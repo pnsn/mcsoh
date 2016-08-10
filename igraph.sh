@@ -19,8 +19,6 @@ rrdtool graph /var/www/assets/mcsoh/images/${sta}_currents_graph.png \
 --lower-limit -5 \
 --right-axis 1:0 \
 --color CANVAS#000000 \
---color FONT#FFFFFF \
---color BACK#000000 \
 DEF:Adc_ic_f=/var/www/rrd/${sta}_mppt.rrd:Adc_ic_f:AVERAGE \
 DEF:Adc_il_f=/var/www/rrd/${sta}_mppt.rrd:Adc_il_f:AVERAGE \
 CDEF:Icharge=Adc_ic_f,79.16,32768,/,* \

@@ -1,10 +1,11 @@
 #!/bin/bash
 #./CommDurationgraph.sh
+/bin/bash -l -c "/home/deploy/mcsoh/CommDurationgraph.sh"
 for sta in LCCR MARC; do
 echo $sta 
-./vgraph.sh $sta
-./igraph.sh $sta
-./tgraph.sh $sta
-./cgraph.sh $sta
-./vbatt-lvd_graph.sh $sta
+/bin/bash -l -c "/home/deploy/mcsoh/vgraph.sh ${sta}"
+/bin/bash -l -c "/home/deploy/mcsoh/igraph.sh ${sta}"
+/bin/bash -l -c "/home/deploy/mcsoh/tgraph.sh ${sta}"
+/bin/bash -l -c "/home/deploy/mcsoh/cgraph.sh ${sta}"
+/bin/bash -l -c "/home/deploy/mcsoh/vbatt-lvd_graph.sh ${sta}"
 done

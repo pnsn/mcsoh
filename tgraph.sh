@@ -19,8 +19,6 @@ rrdtool graph /var/www/assets/mcsoh/images/${sta}_Temps_graph.png \
 --lower-limit -30 \
 --right-axis 1:0 \
 --color CANVAS#000000 \
---color FONT#FFFFFF \
---color BACK#000000 \
 DEF:T_amb=/var/www/rrd/${sta}_mppt.rrd:T_amb:AVERAGE \
 DEF:T_batt=/var/www/rrd/${sta}_mppt.rrd:T_batt:AVERAGE \
 CDEF:Temp_Amb=T_amb,1,*  \

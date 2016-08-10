@@ -741,13 +741,13 @@ while True:#Always on Loop to cycle.
 
     #for x in range(1000):
     #Put the output in a txt file.
-    sys.stdout=open("Insert8.3.log", "a+")
+    sys.stdout=open("/var/log/pnsn_web/mcsoh.log", "a+")
     # declare the path to the input file
     #sfpath = ("C:\\Users\\Dan\\Desktop\\Radio Modbus Stuff")
-    sfpath = ("/home/mbiundo/Desktop/MCSOH/RRDTool/Insert8/")
+    sfpath = ("/var/www/rrd")
     # open input file for reading using tfpath above
     #stationfile = open(sfpath + "//" + "//StationList.txt", "r")
-    stationfile = open(sfpath  + "/StationList.txt", "r")
+    stationfile = open("./StationList.txt", "r")
     #=============================================================================
     # read the file line by line until EOF
     # File line entry  example:
@@ -833,7 +833,7 @@ while True:#Always on Loop to cycle.
         #    Append additional values to the end of the %(int params[]) list below... Just make sure the
         #    additions identical in the RRD db and script that creates it.
         #====================================================================================================
-        ret = rrdtool.update('/home/mbiundo/Desktop/MCSOH/RRDTool/Insert8/'+StationName+'.rrd','N:\
+        ret = rrdtool.update('/var/www/rrd/'+StationName+'.rrd','N:\
         %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
         %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
         %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\

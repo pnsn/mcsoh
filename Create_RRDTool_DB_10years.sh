@@ -1,4 +1,4 @@
-rrdtool create CHZZ_mppt.rrd --step 60 \
+rrdtool create $1_mppt.rrd --step 60 \
 DS:Adc_vb_f:GAUGE:600:0:65535 \
 DS:Adc_va_f:GAUGE:600:0:65535 \
 DS:Adc_vl_f:GAUGE:600:0:65535 \
@@ -48,5 +48,3 @@ DS:Comm_Duration:GAUGE:600:0:600 \
 RRA:AVERAGE:0.5:1:1051200 \
 RRA:MIN:0.5:1:1051200 \
 RRA:MAX:0.5:1:1051200
-
-

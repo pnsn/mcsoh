@@ -747,7 +747,7 @@ while True:#Always on Loop to cycle.
     sfpath = ("/var/www/rrd")
     # open input file for reading using tfpath above
     #stationfile = open(sfpath + "//" + "//StationList.txt", "r")
-    stationfile = open("./StationList.txt", "r")
+    stationfile = open("/home/deploy/mcsoh/StationList.txt", "r")
     #=============================================================================
     # read the file line by line until EOF
     # File line entry  example:

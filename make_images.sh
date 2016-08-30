@@ -1,7 +1,7 @@
 #!/bin/bash
 #./CommDurationgraph.sh
 /bin/bash -l -c "/home/deploy/mcsoh/CommDurationgraph.sh"
-for sta in LCCR MARC; do
+for sta in LCCR MARC CORE TEST; do
 echo $sta 
 /bin/bash -l -c "/home/deploy/mcsoh/vgraph.sh ${sta}"
 /bin/bash -l -c "/home/deploy/mcsoh/igraph.sh ${sta}"

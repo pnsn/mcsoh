@@ -8,7 +8,7 @@ Power System State of Health from Morningstar MPPT-15L Solar Controller
 # We may be able to anticipate failures of battery systems and help schedule preventitive maintenance for battery banks.
 # The MPPT requires a MorningStar Serial MSC.
 # Since the MPPT+MSC pair would not simply commuicate via TCP/IP or Modbus prototocols, a Arduino MicroController is acting
-# as an interpreter between controller and radio: [mppt+MSC]----[interpreter]-----[rs232 serial port]--------[rs232 serial port]TCP/IP Radio 
+# as an translator between controller and radio: [mppt+MSC]----[translator]-----[rs232 serial port]--------[rs232 serial port]TCP/IP Radio 
 # This code is prototype in nature once extensive bench and field testing can be completed.
 # This code nor the ancilliary hardware will modify the state of the MPPT. It is READ ONLY!
 # The tranlator Arduino hardware draws 20 milli amps or consumes .24Watts of power.

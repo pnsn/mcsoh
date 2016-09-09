@@ -39,7 +39,7 @@ GPRINT:Vbatt:LAST:"Last\:%2.2lf" \
 GPRINT:Vbatt:AVERAGE:"Avg\:%2.2lf" \
 GPRINT:Vbatt:MAX:"Max\:%2.2lf" \
 GPRINT:Vbatt:MIN:"Min\:%2.2lf\n" \
-LINE2:Varray#0000ff:"Varray" \
+LINE2:Varray#ffff00:"Varray" \
 GPRINT:Varray:LAST:"Last\:%2.2lf" \
 GPRINT:Varray:AVERAGE:"Avg\:%2.2lf" \
 GPRINT:Varray:MAX:"Max\:%2.2lf" \

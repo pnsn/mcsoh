@@ -10,7 +10,7 @@ fi
 rrdtool graph /var/www/assets/mcsoh/images/${sta}_currents_graph.png \
 -w 785 -h 120 -a PNG \
 --slope-mode \
---start -360000 --end now \
+--start -1209600 --end now \
 --font DEFAULT:7: \
 --title "Station $sta MPPT Solar Controller Data" \
 --watermark "`date`" \

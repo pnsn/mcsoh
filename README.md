@@ -1,27 +1,27 @@
 # mcsoh
 Power System State of Health from Morningstar MPPT-15L Solar Controller 
-#---------------------------------------------------------------
-# Marc Biundo 6/1/16 
-# Version 8.3
-# This program is designed to facilitate communications with multiple Morningstar SunSaver MPPT Solar Controlers Remotely via TCP/IP.
-# The goal is to provide SOH power system monitoring, and provide historical trending to assess battery performance and sizing. 
-# We may be able to anticipate failures of battery systems and help schedule preventitive maintenance for battery banks.
-# The MPPT requires a MorningStar Serial MSC.
-# Since the MPPT+MSC pair would not simply commuicate via TCP/IP or Modbus prototocols, a Arduino MicroController is acting
-# as an translator between controller and radio: [mppt+MSC]----[translator]-----[rs232 serial port]--------[rs232 serial port]TCP/IP Radio 
-# This code is prototype in nature once extensive bench and field testing can be completed.
-# This code nor the ancilliary hardware will modify the state of the MPPT. It is READ ONLY!
-# The tranlator Arduino hardware draws 20 milli amps or consumes .24Watts of power.
-#
-# This program takes the data from the mppt and inserts it into an RRDTool Database.
-# All entries are raw format for post processing with RRDTool graphing utilities.
-# Additionall performance (timing values) from this program are also inserted into the DB.
+---------------------------------------------------------------
+ Marc Biundo 6/1/16 
+ Version 8.3
+ This program is designed to facilitate communications with multiple Morningstar SunSaver MPPT Solar Controlers Remotely via TCP/IP.
+ The goal is to provide SOH power system monitoring, and provide historical trending to assess battery performance and sizing. 
+ We may be able to anticipate failures of battery systems and help schedule preventitive maintenance for battery banks.
+ The MPPT requires a MorningStar Serial MSC.
+ Since the MPPT+MSC pair would not simply commuicate via TCP/IP or Modbus prototocols, a Arduino MicroController is acting
+ as an translator between controller and radio: [mppt+MSC]----[translator]-----[rs232 serial port]--------[rs232 serial port]TCP/IP Radio 
+ This code is prototype in nature once extensive bench and field testing can be completed.
+ This code nor the ancilliary hardware will modify the state of the MPPT. It is READ ONLY!
+ The tranlator Arduino hardware draws 20 milli amps or consumes .24Watts of power.
 
-# Multiple mppt's can be called. Be sure to edit the StationList.txt
-# Example: 
-#       MARC_mppt,192.168.33.11,5001
-#		LCCR_mppt,192.168.33.1,5005
-#		FISH_mppt,192.168.33.100,5001
+ This program takes the data from the mppt and inserts it into an RRDTool Database.
+ All entries are raw format for post processing with RRDTool graphing utilities.
+ Additionall performance (timing values) from this program are also inserted into the DB.
+
+ Multiple mppt's can be called. Be sure to edit the StationList.txt
+ Example: 
+       MARC_mppt,192.168.33.11,5001
+       LCCR_mppt,192.168.33.1,5005
+       FISH_mppt,192.168.33.100,5001
 #
 #    Placing a # in front of the file will cause it to be skipped.
 #

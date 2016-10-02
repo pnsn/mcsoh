@@ -2,7 +2,7 @@
 Power System State of Health from Morningstar MPPT-15L Solar Controller 
 ---------------------------------------------------------------
  Marc Biundo 6/1/16 
- Version 8.3
+ Version 8.3(Final Ubuntu version, when submitted to Github I stopped revision numbering -Marc)
  This program is designed to facilitate communications with multiple Morningstar SunSaver MPPT Solar Controlers Remotely via TCP/IP.
  The goal is to provide SOH power system monitoring, and provide historical trending to assess battery performance and sizing. 
  We may be able to anticipate failures of battery systems and help schedule preventitive maintenance for battery banks.
@@ -43,5 +43,5 @@ Power System State of Health from Morningstar MPPT-15L Solar Controller
  Round Robin Database Tool is the database of choice for this program. Strict layout of RRD Tool Creation formats must be followed.
  The convention for this program is to name the RRD Database as: StationName_mppt.rrd i.e. LCCR_mppt.rrd
  future versions that track other SOH data will use a similar convention. This will help with graphing from multiple RRD databases...
- A ten year database is approximatly 1M bytes in size. And since it is a ring, it will overwrite in 10 years.
+ A ten year database is approximatly 1Gig bytes in size. And since it is a ring, it will overwrite in 10 years.
 

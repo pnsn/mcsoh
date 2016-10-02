@@ -22,26 +22,26 @@ Power System State of Health from Morningstar MPPT-15L Solar Controller
        MARC_mppt,192.168.33.11,5001
        LCCR_mppt,192.168.33.1,5005
        FISH_mppt,192.168.33.100,5001
-#
-#    Placing a # in front of the file will cause it to be skipped.
-#
-#
-# Standard output is written to a file as defined in the code below...
-# It was decided to have a simple CSV format for quick look status. It can be modified if needed.
-# The RRDTool graphing utilities can / will provide extensive calculations and graphing utilities
-# Of all MPPT registers.
-#
-# Example LogFile.txt output:
-#
-#	MARC_mppt,7/24/2016,17:43:11, LoadState,LOAD_ON, VBatt,13.46,V, Vlvd,11.00,V, Vdiff,2.46,V, ChargeState,FLOAT, Comm_Duration, 0.317, seconds,
-#	LCCR_mppt,7/24/2016,17:43:16, LoadState,LOAD_ON, VBatt,13.51,V, Vlvd,11.00,V, Vdiff,2.51,V, ChargeState,FLOAT, Comm_Duration, 4.306, seconds,
-#	FISH_mppt,7/24/2016,17:43:21, LoadState,START, VBatt,0.00,V, Vlvd,0.00,V, Vdiff,0.00,V, ChargeState,START, Comm_Duration, 4.888, seconds,
-#
-# FISH is a unit in test mode with no MPPT attached. That's why the values are 0.00....It's a mode to help validate / qualify Interpeters....
-#
-#
-# Round Robin Database Tool is the database of choice for this program. Strict layout of RRD Tool Creation formats must be followed.
-# The convention for this program is to name the RRD Database as: StationName_mppt.rrd i.e. LCCR_mppt.rrd
-# future versions that track other SOH data will use a similar convention. This will help with graphing from multiple RRD databases...
-# A ten year database is approximatly 1M bytes in size. And since it is a ring, it will overwrite in 10 years.
-#
+
+    Placing a # in front of the file will cause it to be skipped.
+
+
+ Standard output is written to a file as defined in the code below...
+ It was decided to have a simple CSV format for quick look status. It can be modified if needed.
+ The RRDTool graphing utilities can / will provide extensive calculations and graphing utilities
+ Of all MPPT registers.
+
+ Example LogFile.txt output:
+
+	MARC_mppt,7/24/2016,17:43:11, LoadState,LOAD_ON, VBatt,13.46,V, Vlvd,11.00,V, Vdiff,2.46,V, ChargeState,FLOAT, Comm_Duration, 0.317, seconds,
+	LCCR_mppt,7/24/2016,17:43:16, LoadState,LOAD_ON, VBatt,13.51,V, Vlvd,11.00,V, Vdiff,2.51,V, ChargeState,FLOAT, Comm_Duration, 4.306, seconds,
+	FISH_mppt,7/24/2016,17:43:21, LoadState,START, VBatt,0.00,V, Vlvd,0.00,V, Vdiff,0.00,V, ChargeState,START, Comm_Duration, 4.888, seconds,
+
+ FISH is a unit in test mode with no MPPT attached. That's why the values are 0.00....It's a mode to help validate / qualify Interpeters....
+
+
+ Round Robin Database Tool is the database of choice for this program. Strict layout of RRD Tool Creation formats must be followed.
+ The convention for this program is to name the RRD Database as: StationName_mppt.rrd i.e. LCCR_mppt.rrd
+ future versions that track other SOH data will use a similar convention. This will help with graphing from multiple RRD databases...
+ A ten year database is approximatly 1M bytes in size. And since it is a ring, it will overwrite in 10 years.
+

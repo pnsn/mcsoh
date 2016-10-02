@@ -28,7 +28,7 @@ GPRINT:Temp_Amb:LAST:"Last\:%2.2lf" \
 GPRINT:Temp_Amb:AVERAGE:"Avg\:%2.2lf" \
 GPRINT:Temp_Amb:MAX:"Max\:%2.2lf" \
 GPRINT:Temp_Amb:MIN:"Min\:%2.2lf\n" \
-LINE1:Temp_Batt#0000ff:"Battery Temperature in Celcius" \
+LINE1:Temp_Batt#00ff00:"Battery Temperature in Celcius" \
 GPRINT:Temp_Batt:LAST:"Last\:%2.2lf" \
 GPRINT:Temp_Batt:AVERAGE:"Avg\:%2.2lf" \
 GPRINT:Temp_Batt:MAX:"Max\:%2.2lf" \

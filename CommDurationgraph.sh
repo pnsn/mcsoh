@@ -2,7 +2,7 @@
 rrdtool graph /var/www/assets/mcsoh/images/CommDura_graph.png \
 -w 785 -h 120 -a PNG \
 --slope-mode \
---start -1209600 --end now \
+--start -2week --end now \
 --font DEFAULT:7: \
 --title "Round Trip Communication Duration" \
 --watermark "`date`" \

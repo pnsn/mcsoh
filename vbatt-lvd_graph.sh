@@ -10,7 +10,7 @@ fi
 rrdtool graph /var/www/assets/mcsoh/images/${sta}_vbatt-lvd_graph.png \
 -w 785 -h 120 -a PNG \
 --slope-mode \
---start -1209600 --end now \
+--start -2week --end now \
 --font DEFAULT:7: \
 --title "Station $sta MPPT Solar Controller Data" \
 --watermark "`date`" \
@@ -30,7 +30,6 @@ CDEF:Vbatt-LVD=Vbatt,LVD,- \
 COMMENT:"This line is the difference of Vbatt and LVD. When this line hits Zero, the Low Voltage Disconnect is activated.\n" \
 COMMENT:"I think this may be a good way to watch mulitple systems longterm, it simplifies the graphs...I think \n" \
 LINE2:Vbatt-LVD#ff0000:"Vbatt-LVD" \
-LINE1:Vbatt-LVD#ff0000:AVERAGE:"Vbatt-LVD" \
 GPRINT:Vbatt-LVD:LAST:" Last\:%2.2lf" \
 GPRINT:Vbatt-LVD:AVERAGE:" Avg\:%2.2lf"  \
 GPRINT:Vbatt-LVD:MAX:" Max\:%2.2lf"  \

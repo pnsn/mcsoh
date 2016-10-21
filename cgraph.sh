@@ -16,10 +16,33 @@ rrdtool graph /var/www/assets/mcsoh/images/${sta}_ChargeState_graph.png \
 --watermark "`date`" \
 --vertical-label "Charge States" \
 --right-axis-label "Charge States" \
---lower-limit 0 \
+--upper-limit 1 \
+--lower-limit 5 \
+--rigid \
 --right-axis 1:0 \
 --color CANVAS#000000 \
 DEF:Charge_State=/var/www/rrd/${sta}_mppt.rrd:Charge_State:AVERAGE \
+CDEF:CS=Charge_State \
+CDEF:Start=CS,0,EQ,CS,0,IF \
+AREA:Start#0099ff:"Start" \
+CDEF:Night_Check=CS,1,EQ,CS,0,IF \
+AREA:Night_Check#660066:"Night_Check" \
+CDEF:Disconnect=CS,2,EQ,CS,0,IF \
+AREA:Disconnect#990000:"Disconnect" \
+CDEF:Night=CS,3,EQ,CS,0,IF \
+AREA:Night#555555:"Night" \
+CDEF:Fault=CS,4,EQ,CS,0,IF \
+AREA:Fault#ff0000:"Fault" \
+CDEF:Bulk_Charge=CS,5,EQ,CS,0,IF \
+AREA:Bulk_Charge#ff9900:"Bulk_Charge" \
+CDEF:Absorption=CS,6,EQ,CS,0,IF \
+AREA:Absorption#ffff00:"Absorption" \
+CDEF:Float=CS,7,EQ,CS,0,IF \
+AREA:Float#00ff00:"Float" \
+CDEF:Equalize=CS,8,EQ,CS,0,IF \
+AREA:Equalize#ff00ff:"Equalize\n" \
+GPRINT:CS:LAST:"Last\:%2.2lf\n" \
+COMMENT:"------------------------------------------------------------------------------------------------------------------------\n" \
 COMMENT:"BULK CHARGE-The battery is not at 100% state of charge and battery voltage has not yet charged to the\n" \
 COMMENT:"Absorption voltage setpoint. The controller will deliver 100% of available solar power to recharge\n" \
 COMMENT:"the battery.\n" \
@@ -40,27 +63,5 @@ COMMENT:"Once in Float stage, loads can continue to draw power from the battery.
 COMMENT:"charge current, the controller will no longer be able to maintain the battery at the Float setpoint. Should the battery\n" \
 COMMENT:"voltage remain below the Float setpoint for a cumulative 30 minutes, the controller will exit Float and retrun to Bulk.\n" \
 COMMENT:"The Float setpoint is temperature compensated if the RTS is connected.\n" \
-COMMENT:"------------------------------------------------------------------------------------------------------------------------\n" \
-CDEF:CS=Charge_State \
-CDEF:Start=CS,0,EQ,CS,0,IF \
-AREA:Start#0099ff:"Start=0" \
-CDEF:Night_Check=CS,1,EQ,CS,0,IF \
-AREA:Night_Check#660066:"Night_Check=1" \
-CDEF:Disconnect=CS,2,EQ,CS,0,IF \
-AREA:Disconnect#990000:"Disconnect=2" \
-CDEF:Night=CS,3,EQ,CS,0,IF \
-AREA:Night#555555:"Night=3" \
-CDEF:Fault=CS,4,EQ,CS,0,IF \
-AREA:Fault#ff0000:"Fault=4" \
-CDEF:Bulk_Charge=CS,5,EQ,CS,0,IF \
-AREA:Bulk_Charge#ff9900:"Bulk_Charge=5" \
-CDEF:Absorption=CS,6,EQ,CS,0,IF \
-AREA:Absorption#ffff00:"Absorption=6" \
-CDEF:Float=CS,7,EQ,CS,0,IF \
-AREA:Float#00ff00:"Float=7" \
-CDEF:Equalize=CS,8,EQ,CS,0,IF \
-AREA:Equalize#ff00ff:"Equalize=8\n" \
-GPRINT:CS:LAST:"Last\:%2.2lf\n" 
- 
-
+COMMENT:"------------------------------------------------------------------------------------------------------------------------\n" 
 

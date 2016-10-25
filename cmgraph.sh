@@ -8,7 +8,7 @@ else
 fi
 
 rrdtool graph /var/www/assets/mcsoh/images/${sta}_Charge_m_State_graph.png \
--w 785 -h 30 -a PNG \
+-w 785 -h 20 -a PNG \
 --slope-mode \
 --start -2month --end now \
 --font DEFAULT:7: \

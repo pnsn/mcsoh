@@ -14,6 +14,7 @@ rrdtool graph /var/www/assets/mcsoh/images/${sta}_Charge_m_State_graph.png \
 --font DEFAULT:7: \
 --watermark "`date`" \
 --vertical-label " $sta" \
+--right-axis-label " $sta" \
 --upper-limit 1 \
 --lower-limit 5 \
 --rigid \

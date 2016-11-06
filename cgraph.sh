@@ -14,8 +14,8 @@ rrdtool graph /var/www/assets/mcsoh/images/${sta}_ChargeState_graph.png \
 --font DEFAULT:7: \
 --title "Station $sta MPPT Solar Controller Data" \
 --watermark "`date`" \
---vertical-label "Charge States" \
---right-axis-label "Charge States" \
+--vertical-label "$sta Charge States" \
+--right-axis-label "$sta Charge States" \
 --upper-limit 1 \
 --lower-limit 5 \
 --rigid \

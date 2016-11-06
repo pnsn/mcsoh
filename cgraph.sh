@@ -8,7 +8,7 @@ else
 fi
 
 rrdtool graph /var/www/assets/mcsoh/images/${sta}_ChargeState_graph.png \
--w 785 -h 120 -a PNG \
+-w 785 -h 60 -a PNG \
 --slope-mode \
 --start -2week --end now \
 --font DEFAULT:7: \
@@ -40,8 +40,8 @@ AREA:Absorption#ffff00:"Absorption" \
 CDEF:Float=CS,7,EQ,CS,0,IF \
 AREA:Float#00ff00:"Float" \
 CDEF:Equalize=CS,8,EQ,CS,0,IF \
-AREA:Equalize#ff00ff:"Equalize\n" \
-GPRINT:CS:LAST:"Last\:%2.2lf\n" \
+AREA:Equalize#ff00ff:"Equalize\c" \
+GPRINT:CS:LAST:"Last\:%2.2lf\r" \
 COMMENT:"------------------------------------------------------------------------------------------------------------------------\n" \
 COMMENT:"BULK CHARGE-The battery is not at 100% state of charge and battery voltage has not yet charged to the\n" \
 COMMENT:"Absorption voltage setpoint. The controller will deliver 100% of available solar power to recharge\n" \

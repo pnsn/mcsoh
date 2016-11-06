@@ -18,7 +18,6 @@ rrdtool graph /var/www/assets/mcsoh/images/${sta}_Charge_m_State_graph.png \
 --upper-limit 1 \
 --lower-limit 5 \
 --rigid \
---right-axis 1:0 \
 --color CANVAS#000000 \
 DEF:Charge_State=/var/www/rrd/${sta}_mppt.rrd:Charge_State:AVERAGE \
 CDEF:CS=Charge_State \
@@ -39,5 +38,4 @@ AREA:Absorption#ffff00:"Absorption" \
 CDEF:Float=CS,7,EQ,CS,0,IF \
 AREA:Float#00ff00:"Float" \
 CDEF:Equalize=CS,8,EQ,CS,0,IF \
-AREA:Equalize#ff00ff:"Equalize\n" 
-
+AREA:Equalize#ff00ff:"Equalize\c" 

@@ -10,4 +10,5 @@ echo $sta
 /bin/bash -l -c "/home/deploy/mcsoh/tgraph.sh ${sta}"
 /bin/bash -l -c "/home/deploy/mcsoh/cgraph.sh ${sta}"
 /bin/bash -l -c "/home/deploy/mcsoh/vbatt-lvd_graph.sh ${sta}"
+/bin/bash -l -c "/home/deploy/mcsoh/vbatt.sh ${sta}"
 done

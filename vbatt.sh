@@ -24,22 +24,22 @@ DEF:V_lvd=/var/www/rrd/${sta}_mppt.rrd:V_lvd:AVERAGE \
 CDEF:LVD=V_lvd,100,32768,/,* \
 DEF:Adc_vb_f=/var/www/rrd/${sta}_mppt.rrd:Adc_vb_f:AVERAGE \
 CDEF:Vbatt=Adc_vb_f,100,32768,/,* \
-DEF:data1=/var/www/rrd/${sta}_mppt.rrd:Adc_vb_f:AVERAGE:start=now-8d:end=now+1d \
+DEF:data1=/var/www/rrd/${sta}_mppt.rrd:Adc_vb_f:MIN:start=now-8d:end=now+1d \
 CDEF:data1Scaled=data1,100,32768,/,* \
-DEF:data2=/var/www/rrd/${sta}_mppt.rrd:Adc_vb_f:AVERAGE:start=now-2w:end=now+20d \
+DEF:data2=/var/www/rrd/${sta}_mppt.rrd:Adc_vb_f:MIN:start=now-2w:end=now+20d \
 CDEF:data2Scaled=data2,100,32768,/,* \
 LINE2:Vbatt#ff00ff:"Vbatt" \
 GPRINT:Vbatt:LAST:"Last\:%2.2lf" \
 GPRINT:Vbatt:AVERAGE:"Avg\:%2.2lf" \
 GPRINT:Vbatt:MAX:"Max\:%2.2lf" \
-GPRINT:Vbatt:MIN:"Min\:%2.2lf\n" \
+GPRINT:Vbatt:MIN:"Min\:%2.2lf" \
 VDEF:D=data2Scaled,LSLSLOPE \
 VDEF:H=data2Scaled,LSLINT \
 CDEF:projection=data2Scaled,POP,D,COUNT,*,H,+ \
-LINE2:projection#ffff00:"Vbatt Projection\n":dashes \
+LINE2:projection#ffff00:"Vbatt Projection":dashes \
 VDEF:D1=LVD,LSLSLOPE \
 VDEF:H1=LVD,LSLINT \
 CDEF:projectionLVD=LVD,POP,D1,COUNT,*,H1,+ \
 LINE2:LVD#ff0000:"LVD" \
-GPRINT:LVD:LAST:" Last\:%2.2lf\l" \
+GPRINT:LVD:LAST:" Last\:%2.2lf" \
 LINE2:projectionLVD#ff0000:"LVD Projection\n":dashes 

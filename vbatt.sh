@@ -9,7 +9,7 @@ fi
 rrdtool graph /var/www/assets/mcsoh/images/${sta}_vbatt_graph.png \
 -w 785 -h 120 -a PNG \
 --slope-mode \
---start -2week --end='+1m'  \
+--start -2week --end='+2w'  \
 --font DEFAULT:7: \
 --title "Station $sta MPPT Solar Controller Data" \
 --watermark "`date`" \

@@ -42,4 +42,6 @@ VDEF:H1=LVD,LSLINT \
 CDEF:projectionLVD=LVD,POP,D1,COUNT,*,H1,+ \
 LINE2:LVD#ff0000:"LVD" \
 GPRINT:LVD:LAST:" Last\:%2.2lf" \
-LINE2:projectionLVD#ff0000:"LVD Projection\n":dashes 
+LINE2:projectionLVD#ff0000:"LVD Projection":dashes \
+LINE2:11.4 \
+AREA:-5#ff000066::STACK 

@@ -1,7 +1,7 @@
 #!/bin/bash
 #./CommDurationgraph.sh
 /bin/bash -l -c "/home/deploy/mcsoh/CommDurationgraph.sh"
-for sta in CORE FISH LCCR MARC TEST YACT; do
+for sta in BAND BROK CORE FISH LCCR MARC TEST YACT; do
 echo $sta 
 
 /bin/bash -l -c "/home/deploy/mcsoh/cmgraph.sh ${sta}"

@@ -643,7 +643,16 @@ def doShortScan(s,  StationName):
   #    script
   # ===================================================================
   eod = data.find('*')
-  dchksum = data[eod+1:-2]        # get the checksum value, no *, no CRLF
+  if eod == -1:
+    raise BadChecksum       # couldn't find checksum marker - abort
+
+  # find the position of CRLF AFTER '*'
+  crlf = data.find('\r\n', eod)
+  if crlf == -1:
+    raise BadChecksum       # could fine CRLF at end of stream - abort
+
+  # use the chars between the '*' and CRLF for checksum value
+  dchksum = data[eod+1:crlf]
 
   # Exception for corrupted string.
   # If the checksum's do not match, return from the call to doShortScan and try again.
@@ -660,6 +669,17 @@ def doShortScan(s,  StationName):
   params = data[:eod].split(',')  # make a list out of the CSV string from translator
   dathdr = params.pop(0)          # get and remove the data header string
   fwrev = params.pop(0)           # get and remove the fw revision string
+  ############################################################################
+  #### make sure the length of params is at least xx
+  #### len(params) should equal len(PStatLst) that is the assumption
+  #### In this code we need at least 20 params, so if the asterisk can be
+  #### found and the params is at least 20 we are good - really it should
+  #### be the same as the PStatLst AND the asterisk found!!!!!
+  ############################################################################
+  if len(params) != len(PStatLst):
+    print 'MPPT PARAMS CORRUPT %s' %(params)
+    raise BadChecksum  # use the same exception
+
 
   #-----------------------------------------------------------------------------------------------------------------
   #CSV format for output header to log. Created to make cronlog easy to read with many stations. 

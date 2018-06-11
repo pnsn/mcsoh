@@ -654,6 +654,17 @@ def doShortScan(s,  StationName):
   # use the chars between the '*' and CRLF for checksum value
   dchksum = data[eod+1:crlf]
 
+  #Tweak.  Broken down it is try to set a variable to the base 16 int of dchksum, 
+  #and if it runs into the errors it has been seeing it 
+  #prints a debug statement and raises the BadCheckSum flag.  
+  #Most likely a station or stations are sending back garbage data that it is choking on.  
+  try:
+    testdchksum=int(dchksum, 16)
+  except ValueError:
+    print 'CHECKSUM ValueError %s,%0X' %(dchksum, checksum(data))
+    raise BadChecksum
+
+
   # Exception for corrupted string.
   # If the checksum's do not match, return from the call to doShortScan and try again.
   # If they do match print it for debugging....remove later?
@@ -812,7 +823,7 @@ while True:#Always on Loop to cycle.
                 s.connect((host, port))
             except (socket.timeout, socket.error, socket.gaierror) as e:
                 print 'Station %s (%s:%s) connection error: %s' % (StationName, host, port, e)
-                raise
+                #raise
             for x in range(1):  # stress test by setting > 1
                 #print '%s,%s' % (host, port)
                 # ===================================================================

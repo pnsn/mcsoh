@@ -1,7 +1,7 @@
 #!/bin/bash
 #./CommDurationgraph.sh
 /bin/bash -l -c "/home/deploy/mcsoh/CommDurationgraph.sh"
-for sta in BAND FISH KREP LCCR  YACT; do
+for sta in BABR BAND FISH KREP LCCR  YACT; do
 echo $sta 
 
 /bin/bash -l -c "/home/deploy/mcsoh/cmgraph.sh ${sta}"

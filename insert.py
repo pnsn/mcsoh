@@ -1,13 +1,13 @@
 #!/usr/bin/python
 #---------------------------------------------------------------
-# Marc Biundo 6/1/16 
+# Marc Biundo 6/1/16
 # Version 8.3
 # This program is designed to facilitate communications with multiple Morningstar SunSaver MPPT Solar Controlers Remoteley via TCP/IP.
-# The goal is to provide SOH power system monitioring, and provide historical trending to assess battery performance and sizing. 
+# The goal is to provide SOH power system monitioring, and provide historical trending to assess battery performance and sizing.
 # We may be able to anticipate failures of battery systems and help schedule preventitive maintenance for battery banks.
 # The MPPT requires a MorningStar Serial MSC.
 # Since the MPPT+MSC pair would not simply commuicate via TCP/IP or Modbus prototocols, a Arduino MicroController is acting
-# as an interpreter between controller and radio: [mppt+MSC]----[interpreter]-----[rs232 serial port]--------[rs232 serial port]TCP/IP Radio 
+# as an interpreter between controller and radio: [mppt+MSC]----[interpreter]-----[rs232 serial port]--------[rs232 serial port]TCP/IP Radio
 # This code is prototype in nature once extensive bench and field testing can be completed.
 # This code nor the ancilliary hardware will modify the state of the MPPT. It is READ ONLY!
 # The tranlator Arduino hardware draws 20 milli amps or consumes .24Watts of power.
@@ -17,7 +17,7 @@
 # Additionall performance (timing values) from this program are also inserted into the DB.
 
 # Multiple mppt's can be called. Be sure to edit the StationList.txt
-# Example: 
+# Example:
 #       MARC_mppt,192.168.33.11,5001
 #		LCCR_mppt,192.168.33.1,5005
 #		FISH_mppt,192.168.33.100,5001
@@ -52,7 +52,7 @@
 # by the Arduino Pro Mini translator.
 #
 # Baud rate on Translator is 19200 8N1, no null needed... Direct connect.
-# If you connect directly to translator via serial, use putty. 
+# If you connect directly to translator via serial, use putty.
 # The LED will blink every 5 sec. It's sending the string. This string contains the 45
 # mppt registers...
 #
@@ -79,7 +79,7 @@
 #
 # 3/24/16: all bit fields are decoded except the 24 bit alarm HI/LO parameter
 #-----------------------------------------------------------------------
-# 7/2/16 Biundo 
+# 7/2/16 Biundo
 #-----------------------------------------------------------------------
 # Check for a "commented out" line in StationList and do not use it..
 # Made print statements more CSV like. Make sure to add / maniplulate commas to avoid new lines.
@@ -88,15 +88,15 @@
 # The original print statements are commented out... Should you want them for debugging purposes later.
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
-# 7/10/16 Biundo 
+# 7/10/16 Biundo
 #-----------------------------------------------------------------------
 # Exception Handeling added for socket comms. This includes some timing information to assess performance.
 # There is now only on socket timeout call. There were several in previous revisions for testing.
-# 
+#
 #-----------------------------------------------------------------------
-# 7/19/16 Biundo 
+# 7/19/16 Biundo
 #-----------------------------------------------------------------------
-# Exception Handeling added for checksum / string 
+# Exception Handeling added for checksum / string
 # -----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 vfactor = 100.0/32768   # Volts
@@ -187,7 +187,7 @@ PLoadFault = [["External Short Circuit   ", "No Fault", "Fault"],
               ["Fault 8                  ", "No Fault", "Fault"]]
 
 # Dip Switch settings (bit field)
-# ... 4 position dip switch. 
+# ... 4 position dip switch.
 # ... PDipSwitch[0][0] - Switch 1 Name string
 # ... PDipSwitch[0][1] - Switch 1, '0' (off) value string
 # ... PDipSwitch[0][0] - Switch 1, '1' (on) value string
@@ -207,7 +207,7 @@ PDipSwitch = [["Battery Type", "User Select Jumper", "Custom Battery Settings"],
 
 # Create name / scale factor lists / units
 # These items are order dependent. The message list index is used
-# as an index to this list. This list is ordered and needs to 
+# as an index to this list. This list is ordered and needs to
 # be contigious!
 #
 # In order to scale and/or decode items the Scale Factor field is used
@@ -229,7 +229,7 @@ PDipSwitch = [["Battery Type", "User Select Jumper", "Custom Battery Settings"],
 #  '-3': Indicates the param is the upper word of a 32/24 value (_HI).
 #      Use this value plus the next param to form the Long integer.
 #      Scale factor is stored in _HI 'unitsOffset' (Units) position
-#      Units string is stored in _LO 'unitsOffset' (Units) position 
+#      Units string is stored in _LO 'unitsOffset' (Units) position
 #           [Name String,  -3, Scale Factor]
 #           [Name String,  -4, Units String]
 #
@@ -389,7 +389,7 @@ formatCSV = '%s,%.2f,%s,'
 
 # ===================================================================
 # Function to parse out and display battery voltage from battery voltage
-# status message 
+# status message
 # ===================================================================
 def doVbattery(params):
     sf = int(params[0])*PStatLst[0][scalerOffset]
@@ -398,34 +398,34 @@ def doVbattery(params):
 # Origninal print statement
 #    print format % (20, 'Battery Voltage', 4, ' 9', 12, ns, 8, sf, 10, ' '+units)
 # New CSV formatted print statement for output/cronlog.
-    print formatCSV % ('VBatt',sf,''+units), 
+    print formatCSV % ('VBatt',sf,''+units),
 # ... End doVbattery Function ...
 
 # ===================================================================
 # Function to parse out and display array voltage from array voltage
-# status message 
-# ===================================================================    
+# status message
+# ===================================================================
 def doVarray(params):
     sf = int(params[1])*PStatLst[1][scalerOffset]
     ns = PStatLst[1][nameOffset]
     units = PStatLst[1][unitsOffset]
-#    print format % (20, 'Array Voltage', 4, '10', 12, ns, 8, sf, 10, ' '+units)    
+#    print format % (20, 'Array Voltage', 4, '10', 12, ns, 8, sf, 10, ' '+units)
 # ... End doVarray Function ...
 
 # ===================================================================
 # Function to parse out and display load voltate from voltage
-# status message 
-# ===========================doShortScan========================================    
+# status message
+# ===========================doShortScan========================================
 def doVload(params):
     sf = int(params[2])*PStatLst[2][scalerOffset]
     ns = PStatLst[2][nameOffset]
     units = PStatLst[2][unitsOffset]
-#    print format % (20, 'Load Voltage', 4, '11', 12, ns, 8, sf, 10, ' '+units) 
+#    print format % (20, 'Load Voltage', 4, '11', 12, ns, 8, sf, 10, ' '+units)
 # ... End doVload Function ...
 
 # ===================================================================
 # Function to parse out and display load current from current
-# status message 
+# status message
 # ===================================================================
 def doLoadCurrent(params):
   sf = int(params[4])*PStatLst[4][scalerOffset]
@@ -436,7 +436,7 @@ def doLoadCurrent(params):
 
 # ===================================================================
 # Function to parse out and display load current from current
-# status message 
+# status message
 # ===================================================================
 def doChargingCurrent(params):
   sf = int(params[3])*PStatLst[3][scalerOffset]
@@ -449,7 +449,7 @@ def doChargingCurrent(params):
 t_format  = '%-*s%-*s%-*s%*.2f%-*s%s%.1f%s'
 # ===================================================================
 # Function to parse out and display heatsink temperature from heatsink temperature
-# status message 
+# status message
 # ===================================================================
 def doTempheatsink(params):
   sf = int(params[5])*PStatLst[5][scalerOffset]
@@ -458,11 +458,11 @@ def doTempheatsink(params):
   units = PStatLst[5][unitsOffset]
 #  print t_format % (20, 'Heatsink Temp', 4, '14', 12, ns, 8, sf, 6, ' '+units, ' (', sf1, 'F)')
 # ... End doTempheatsink Function ...
-    
+
 # ===================================================================
 # Function to parse out and display battery temperature IF probe connected! from battery temperature
 # status message ambient if rts not connected.
-# ===================================================================    
+# ===================================================================
 def doTempBattery(params):
   sf = int(params[6])*PStatLst[6][scalerOffset]
   sf1 = int(params[6])*1.8 + 32
@@ -473,7 +473,7 @@ def doTempBattery(params):
 
 # ===================================================================
 # Function to parse out and display ambient temperature from ambient
-# temp from current status message 
+# temp from current status message
 # ===================================================================
 def doTempAmbient(params):
   sf = int(params[7])*PStatLst[7][scalerOffset]
@@ -497,7 +497,7 @@ def doTemprts(params):
 
 # ===================================================================
 # Function to parse out and display load current from current
-# status message 
+# status message
 # Charge State Values
 # PChrgState = ["START",
 #              "NIGHT_CHECK",
@@ -521,27 +521,27 @@ def doChargeState(params):
 #  print format % (20, 'Charge State', 4, '18', 12, ns, 8, sf, 10, ' '+units)
   if sf==0:
     print '%s,' % ('ChargeState,START'),#don't forget comma's to prevent newlines.
-  elif sf==1: 
-    print '%s,' % ('ChargeState,NIGHT_CHECK'), 
+  elif sf==1:
+    print '%s,' % ('ChargeState,NIGHT_CHECK'),
   elif sf==2:
-    print '%s,' % ('ChargeState,DISCONNECT'),     
-  elif sf==3: 
-    print '%s,' % ('ChargeState,NIGHT'),     
+    print '%s,' % ('ChargeState,DISCONNECT'),
+  elif sf==3:
+    print '%s,' % ('ChargeState,NIGHT'),
   elif sf==4:
-    print '%s,' % ('ChargeState,FAULT'), 
-  elif sf==5: 
-    print '%s,' % ('ChargeState,BULK_CHARGE'), 
-  elif sf==6: 
-    print '%s,' % ('ChargeState,ABSORPTION'),     
+    print '%s,' % ('ChargeState,FAULT'),
+  elif sf==5:
+    print '%s,' % ('ChargeState,BULK_CHARGE'),
+  elif sf==6:
+    print '%s,' % ('ChargeState,ABSORPTION'),
   elif sf==7:
-    print '%s,' % ('ChargeState,FLOAT'),    
-  elif sf==8: 
-    print '%s,' % ('ChargeState,EQUALIZE'),  
+    print '%s,' % ('ChargeState,FLOAT'),
+  elif sf==8:
+    print '%s,' % ('ChargeState,EQUALIZE'),
 # ... End doChargeState Function ...
 
 # ===================================================================
 # Function to parse out and display load state
-# status message 
+# status message
 # Load State with load
 # PLoadState = ["START",
 #                "LOAD_ON",
@@ -561,43 +561,43 @@ def doLoadState(params):
   units = (PStatLst[18][unitsOffset])[sf] # index list with value
 #Original print
 #  print format % (20, 'Load State', 4, '27', 12, ns, 8, sf, 10, ' '+units)
-#===========================New CSV print===================================================== 
+#===========================New CSV print=====================================================
 # This block is for putting the LoadState int he print / cron file. Should the RRD insert miss
 # the LVD_WARNING, we can look to the log to get an idea of what happend before station quit.
   if sf==0:
     print '%s,' % ('LoadState,START'),#don't for get comma's to prevent newlines.
-  elif sf==1: 
+  elif sf==1:
     print '%s,' % ('LoadState,LOAD_ON'),
   elif sf==2:
-    print '%s,' % ('LoadState,LVD_WARNING'),    
-  elif sf==3: 
-    print '%s,' % ('LoadState,LVD'),    
+    print '%s,' % ('LoadState,LVD_WARNING'),
+  elif sf==3:
+    print '%s,' % ('LoadState,LVD'),
   elif sf==4:
-    print '%s,' % ('LoadState,FAULT'),    
-  elif sf==5: 
-    print '%s,' % ('LoadState,DISCONNECT'),   
+    print '%s,' % ('LoadState,FAULT'),
+  elif sf==5:
+    print '%s,' % ('LoadState,DISCONNECT'),
  # else:
   #  continue
 # ... End doLoadState Function ...
 
 # ===================================================================
 # Function to parse out and display load current compensated LVD voltage
-# status message 
+# status message
 # ===================================================================
-#Load current comensated LVD voltage   
+#Load current comensated LVD voltage
 def doLVDVoltage(params):
   sf = int(params[20])*PStatLst[20][scalerOffset]
   ns = PStatLst[20][nameOffset]
   units = PStatLst[20][unitsOffset]
 #  print format % (20, 'LVD Voltage', 4, '29', 12, ns, 8, sf, 10, ' '+units)
-  print formatCSV % ('Vlvd',sf,''+units), 
+  print formatCSV % ('Vlvd',sf,''+units),
 # ... End doLVDVoltage Function ...
 
 # ===================================================================
 # Function to parse out and display Vbatt - load current compensated LVD voltage
 # status message aka Vdiff
 # ===================================================================
-#Load current comensated LVD voltage   
+#Load current comensated LVD voltage
 def doVdiff(params):
   sf1 = int(params[0])*PStatLst[0][scalerOffset]
   ns1 = PStatLst[0][nameOffset]
@@ -606,24 +606,24 @@ def doVdiff(params):
   ns2 = PStatLst[20][nameOffset]
   units2 = PStatLst[20][unitsOffset]
   Vdiff=sf1-sf2
-  print formatCSV % ('Vdiff',Vdiff,''+units2), 
+  print formatCSV % ('Vdiff',Vdiff,''+units2),
 # ... End doVdiff Function ...
 # ===================================================================
-# Function to do the whole tamale. Get a status record from the 
-# selected station. An integer is used to indicate the station to 
-# query and the station table/file is used to get the actural name, 
+# Function to do the whole tamale. Get a status record from the
+# selected station. An integer is used to indicate the station to
+# query and the station table/file is used to get the actural name,
 # IP address and port.
 # ===================================================================
 def doShortScan(s,  StationName):
   global params, data
   # ===================================================================
-  # Retrieve a status record from MPPT/Radio 
+  # Retrieve a status record from MPPT/Radio
   # ----------------------------------------
   #  Send a request. This complete status record is place in "data" string.
   #  ****NOTE! Cell modems do not process any request over the serial port, T, R, E.....
   #  Freewave radio's do... All translators are defaulted to T mode
   #  and will reset to T mode. If you connect directly with a PC,
-  #  try to remember to put the translator back into T mode please. 
+  #  try to remember to put the translator back into T mode please.
   # ===================================================================
   x = mysend(s, 'R\r',  StationName) # send request for status data
   data = myreceive(s, 1024,  StationName)
@@ -654,10 +654,10 @@ def doShortScan(s,  StationName):
   # use the chars between the '*' and CRLF for checksum value
   dchksum = data[eod+1:crlf]
 
-  #Tweak.  Broken down it is try to set a variable to the base 16 int of dchksum, 
-  #and if it runs into the errors it has been seeing it 
-  #prints a debug statement and raises the BadCheckSum flag.  
-  #Most likely a station or stations are sending back garbage data that it is choking on.  
+  #Tweak.  Broken down it is try to set a variable to the base 16 int of dchksum,
+  #and if it runs into the errors it has been seeing it
+  #prints a debug statement and raises the BadCheckSum flag.
+  #Most likely a station or stations are sending back garbage data that it is choking on.
   try:
     testdchksum=int(dchksum, 16)
   except ValueError:
@@ -669,14 +669,14 @@ def doShortScan(s,  StationName):
   # If the checksum's do not match, return from the call to doShortScan and try again.
   # If they do match print it for debugging....remove later?
   #print 'string chksum: ', dchksum , ' - ',
-  #print 'calc chksum: %0X' % (checksum(data)),   
+  #print 'calc chksum: %0X' % (checksum(data)),
   if (int(dchksum, 16)!=checksum(data)):
     print 'CHECKSUM MISMATCH %s,%0X' %(dchksum, checksum(data))
     raise BadChecksum
-  #else:  
+  #else:
    # print 'string chksum: ', dchksum , ' - ',
-   # print 'calc chksum: %0X' % (checksum(data)), 
-  
+   # print 'calc chksum: %0X' % (checksum(data)),
+
   params = data[:eod].split(',')  # make a list out of the CSV string from translator
   dathdr = params.pop(0)          # get and remove the data header string
   fwrev = params.pop(0)           # get and remove the fw revision string
@@ -693,21 +693,21 @@ def doShortScan(s,  StationName):
 
 
   #-----------------------------------------------------------------------------------------------------------------
-  #CSV format for output header to log. Created to make cronlog easy to read with many stations. 
+  #CSV format for output header to log. Created to make cronlog easy to read with many stations.
   #Can be imported into spread sheet for quick viewing....
   #Format of string is StationName,mm/dd/yyyy,hh:mm:ss,THE COMMA AT THE END OF THIS STATEMENT REMOVES THE NEWLINE!
   #So when you call the values you want to print, they are concatinated to the string to keep things pretty.
   #Pay special care to the comma's in the new CSV format print statements. Especially if you revert back to the original!
   #-----------------------------------------------------------------------------------------------------------------
-  
-#format StationName,mm/dd/yyyy,hh:mm:ss,  
+
+#format StationName,mm/dd/yyyy,hh:mm:ss,
   lt = time.localtime()
-  print '%s,%d/%d/%d,%02d:%02d:%02d,' % (StationName, lt.tm_mon, lt.tm_mday, lt.tm_year, lt.tm_hour, lt.tm_min, lt.tm_sec ), 
- 
+  print '%s,%d/%d/%d,%02d:%02d:%02d,' % (StationName, lt.tm_mon, lt.tm_mday, lt.tm_year, lt.tm_hour, lt.tm_min, lt.tm_sec ),
+
 
 #----------------------------------------------------------------------
   # ---------------
-  #Load State 
+  #Load State
   #Moved here so CSV would show states, especially LVD_WARNING first in string after date-time stamp.
   #------------------
   doLoadState(params)
@@ -749,9 +749,9 @@ def doShortScan(s,  StationName):
   # Various State Conditions
   # -------------------------
   doChargeState(params)
-  
+
   # ------------------------------------------------------------------
-  # Return translator to Timed 
+  # Return translator to Timed
   # Message Mode before Exiting
   # ------------------------------------------------------------------
   x = mysend(s, 'T\r', StationName)
@@ -767,134 +767,130 @@ def doShortScan(s,  StationName):
 # -------------------------------------------------------------------
 # -------------------------------------------------------------------
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-while True:#Always on Loop to cycle.
-    cycle_start = time.time()
+cycle_start = time.time()
 
-    #for x in range(1000):
-    #Put the output in a txt file.
-    sys.stdout=open("/var/log/pnsn_web/mcsoh.log", "a+")
-    # declare the path to the input file
-    #sfpath = ("C:\\Users\\Dan\\Desktop\\Radio Modbus Stuff")
-    sfpath = ("/var/www/rrd")
-    # open input file for reading using tfpath above
-    #stationfile = open(sfpath + "//" + "//StationList.txt", "r")
-    stationfile = open("/home/deploy/mcsoh/StationList.txt", "r")
-    #=============================================================================
-    # read the file line by line until EOF
-    # File line entry  example:
-    #  Station Name, IP Address, Port Number<CR><LF> (newline)
-    # Comma Separated Values (CSV) followed by a newline (CRLF)
-    #=============================================================================
-    
-    while True:#Loop to cycle through the StationList.txt file.
-        sfline = stationfile.readline()
-        # strip off newline and create list of fields
-        sfline = sfline.rstrip()
-        if not sfline:
-            break # exit loop if end of file (EOF)
-        # convert CSV into a list
-        sftext = sfline.split(",")
-        # check for a commented out line
-        if sfline[0] == '#':
-            # OPTIONAL - print name of station that is being skipped (minus the #)
-           print 'Skipping: ', (sftext[0][1:])
-           continue # skip this iteration and go on to the next
-        # make sure the list is three elements before continuing
-        if len(sftext) < 3:
-            break # exit loop at first sign of trouble
-    
-    
-        StationName = sftext[0]
-        StationIP = sftext[1]
-        StationPort = int(sftext[2])
-    
-        # create a socket
-        # 30 seconds worked well in testing for cell....
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(30)
-    
-        # connect it to the IP address and Port number
-        # Use StationList for IP and Port
-        host = StationIP
-        port = StationPort
-        #Comm's Exceptions added to make errors more informative
+#for x in range(1000):
+#Put the output in a txt file.
+sys.stdout=open("/var/log/mcsoh.log", "a+")
+# declare the path to the input file
+#sfpath = ("C:\\Users\\Dan\\Desktop\\Radio Modbus Stuff")
+sfpath = ("/var/www/rrd")
+# open input file for reading using tfpath above
+#stationfile = open(sfpath + "//" + "//StationList.txt", "r")
+stationfile = open("/home/deploy/mcsoh/StationList.txt", "r")
+#=============================================================================
+# read the file line by line until EOF
+# File line entry  example:
+#  Station Name, IP Address, Port Number<CR><LF> (newline)
+# Comma Separated Values (CSV) followed by a newline (CRLF)
+#=============================================================================
+
+for sfline in stationfile:
+    # strip off newline and create list of fields
+    sfline = sfline.rstrip()
+    if not sfline:
+        break # exit loop if end of file (EOF)
+    # convert CSV into a list
+    sftext = sfline.split(",")
+    # check for a commented out line
+    if sfline[0] == '#':
+        # OPTIONAL - print name of station that is being skipped (minus the #)
+       print 'Skipping: ', (sftext[0][1:])
+       continue # skip this iteration and go on to the next
+    # make sure the list is three elements before continuing
+    if len(sftext) < 3:
+        break # exit loop at first sign of trouble
+
+
+    StationName = sftext[0]
+    StationIP = sftext[1]
+    StationPort = int(sftext[2])
+
+    # create a socket
+    # 30 seconds worked well in testing for cell....
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(30)
+
+    # connect it to the IP address and Port number
+    # Use StationList for IP and Port
+    host = StationIP
+    port = StationPort
+    #Comm's Exceptions added to make errors more informative
+    try:
         try:
-            try:
-                s.connect((host, port))
-            except (socket.timeout, socket.error, socket.gaierror) as e:
-                print 'Station %s (%s:%s) connection error: %s' % (StationName, host, port, e)
-                #raise
-            for x in range(1):  # stress test by setting > 1
-                #print '%s,%s' % (host, port)
-                # ===================================================================
-                # Function to do the whole tamale. Get a status record from the 
-                # selected station. All the info is placed in the Global list
-                # called "params".
-                # ===================================================================
-                start = time.time()
-                doShortScan(s, StationName)
-                #Comm_Duration may be added to the RRD as well. It may be good to track and compare
-                #between cell,LAN and Radio connectivity differences.
-                Comm_Duration = time.time() - start
-                #print 'Station: %s communication time: %.3f seconds' % (StationName,  comm_duration)
-                print 'Comm_Duration, %.3f, seconds,' % (Comm_Duration) 
-        except (socket.timeout, socket.error, socket.gaierror, BadChecksum):
-            continue
-    
-    
-        #--------------------- Partial example for RRDTOOL LAYOUT AND INSERT function--------------------
-        #---------------------The RRDTool Insert function must match the RRD database layout.
-        #RRDTool database layout for mcsoh2.rrd
-        # DS:Adc_vb_f:GAUGE:600:0:65535 \   params[0]
-        # DS:Adc_va_f:GAUGE:600:0:65535 \   params[1]
-        # DS:Adc_vl_f:GAUGE:600:0:65535 \   params[2]
-        # DS:Adc_ic_f:GAUGE:600:0:65535 \   params[3]
-        # DS:Adc_il_f:GAUGE:600:0:65535 \   params[4]
-        # DS:T_hs:GAUGE:600:-128:127 \      params[5]
-        # DS:T_batt:GAUGE:600:-127:127 \    params[6]
-        # DS:T_amb:GAUGE:600:-127:127 \     params[7]
-        # DS:T_rts:GAUGE:600:-127:127 \     params[8]
-        # DS:Charge_State:GAUGE:600:0:8 \   params[9]
-        # DS:load_state:GAUGE:600:0:6 \     params[18]
-        # DS:V_lvd:GAUGE:600:0:65535 \      params[20]
-    
-        #====================================================================================================
-        #    45 Internal register entries from MPPT into RRD Database.
-        #    You can reference Morningstar's SunSaver MPPT MODBUS Specifcation V10, 14 July 2010 for details.
-        #    Append additional values to the end of the %(int params[]) list below... Just make sure the
-        #    additions identical in the RRD db and script that creates it.
-        #====================================================================================================
-        ret = rrdtool.update('/var/www/rrd/'+StationName+'.rrd','N:\
-        %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
-        %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
-        %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
-        %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
-        %d:%d:%d:%d:%d:%f'\
-        % (int(params[0]),int(params[1]) ,int(params[2]) ,int(params[3]) ,int(params[4]) ,int(params[5]) ,\
-        int(params[6]) ,int(params[7]) ,int(params[8]) , int (params[9]), int (params[10]) , \
-        int(params[11]) ,int(params[12]) ,int(params[13]) , int (params[14]), int (params[15]) , \
-        int(params[16]) ,int(params[17]) ,int(params[18]) , int (params[19]), int (params[20]) , \
-        int(params[21]) ,int(params[22]) ,int(params[23]) , int (params[24]), int (params[25]) , \
-        int(params[26]) ,int(params[27]) ,int(params[28]) , int (params[29]), int (params[30]) , \
-        int(params[31]) ,int(params[32]) ,int(params[33]) , int (params[34]), int (params[35]) , \
-        int(params[36]) ,int(params[37]) ,int(params[38]) , int (params[39]), int (params[40]) , \
-        int(params[41]) ,int(params[42]) ,int(params[43]) , int (params[44]), Comm_Duration )); 
-    
-        if ret:
-            print rrdtool.error()
-        #======================================================================================================
-        
-        # -------------------
-        # close out socket(s)
-        # -------------------
+            s.connect((host, port))
+        except (socket.timeout, socket.error, socket.gaierror) as e:
+            print 'Station %s (%s:%s) connection error: %s' % (StationName, host, port, e)
+            #print '%s,%s' % (host, port)
+        # ===================================================================
+        # Function to do the whole tamale. Get a status record from the
+        # selected station. All the info is placed in the Global list
+        # called "params".
+        # ===================================================================
+        start = time.time()
+        doShortScan(s, StationName)
+        #Comm_Duration may be added to the RRD as well. It may be good to track and compare
+        #between cell,LAN and Radio connectivity differences.
+        Comm_Duration = time.time() - start
+        #print 'Station: %s communication time: %.3f seconds' % (StationName,  comm_duration)
+        print 'Comm_Duration, %.3f, seconds,' % (Comm_Duration)
+    except (socket.timeout, socket.error, socket.gaierror, BadChecksum):
         s.close()
-    #== End Of File read loop =============================
-    # close the station information input file
-    stationfile.close()
-       
-    #clean up output...
-    sys.stdout.flush()
-    #Sleep time set typically the first max argument if it is 3 minutes or longer.    
-    time.sleep(max(180, 60 - (time.time() - cycle_start)))    # sleep until time to start next cycle
-# ... End of Script ...
+        continue
 
+
+    #--------------------- Partial example for RRDTOOL LAYOUT AND INSERT function--------------------
+    #---------------------The RRDTool Insert function must match the RRD database layout.
+    #RRDTool database layout for mcsoh2.rrd
+    # DS:Adc_vb_f:GAUGE:600:0:65535 \   params[0]
+    # DS:Adc_va_f:GAUGE:600:0:65535 \   params[1]
+    # DS:Adc_vl_f:GAUGE:600:0:65535 \   params[2]
+    # DS:Adc_ic_f:GAUGE:600:0:65535 \   params[3]
+    # DS:Adc_il_f:GAUGE:600:0:65535 \   params[4]
+    # DS:T_hs:GAUGE:600:-128:127 \      params[5]
+    # DS:T_batt:GAUGE:600:-127:127 \    params[6]
+    # DS:T_amb:GAUGE:600:-127:127 \     params[7]
+    # DS:T_rts:GAUGE:600:-127:127 \     params[8]
+    # DS:Charge_State:GAUGE:600:0:8 \   params[9]
+    # DS:load_state:GAUGE:600:0:6 \     params[18]
+    # DS:V_lvd:GAUGE:600:0:65535 \      params[20]
+
+    #====================================================================================================
+    #    45 Internal register entries from MPPT into RRD Database.
+    #    You can reference Morningstar's SunSaver MPPT MODBUS Specifcation V10, 14 July 2010 for details.
+    #    Append additional values to the end of the %(int params[]) list below... Just make sure the
+    #    additions identical in the RRD db and script that creates it.
+    #====================================================================================================
+    ret = rrdtool.update('/var/www/rrd/'+StationName+'.rrd','N:\
+    %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
+    %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
+    %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
+    %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
+    %d:%d:%d:%d:%d:%f'\
+    % (int(params[0]),int(params[1]) ,int(params[2]) ,int(params[3]) ,int(params[4]) ,int(params[5]) ,\
+    int(params[6]) ,int(params[7]) ,int(params[8]) , int (params[9]), int (params[10]) , \
+    int(params[11]) ,int(params[12]) ,int(params[13]) , int (params[14]), int (params[15]) , \
+    int(params[16]) ,int(params[17]) ,int(params[18]) , int (params[19]), int (params[20]) , \
+    int(params[21]) ,int(params[22]) ,int(params[23]) , int (params[24]), int (params[25]) , \
+    int(params[26]) ,int(params[27]) ,int(params[28]) , int (params[29]), int (params[30]) , \
+    int(params[31]) ,int(params[32]) ,int(params[33]) , int (params[34]), int (params[35]) , \
+    int(params[36]) ,int(params[37]) ,int(params[38]) , int (params[39]), int (params[40]) , \
+    int(params[41]) ,int(params[42]) ,int(params[43]) , int (params[44]), Comm_Duration ));
+
+    if ret:
+        print rrdtool.error()
+    #======================================================================================================
+
+    # -------------------
+    # close out socket(s)
+    # -------------------
+    s.close()
+#== End Of File read loop =============================
+# close the station information input file
+stationfile.close()
+
+#clean up output...
+sys.stdout.flush()
+#Sleep time set typically the first max argument if it is 3 minutes or longer.
+time.sleep(max(180, 60 - (time.time() - cycle_start)))    # sleep until time to start next cycle
+# ... End of Script ...

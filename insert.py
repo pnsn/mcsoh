@@ -861,7 +861,7 @@ for sfline in stationfile:
     #    Append additional values to the end of the %(int params[]) list below... Just make sure the
     #    additions identical in the RRD db and script that creates it.
     #====================================================================================================
-    ret = rrdtool.update('/var/www/rrd/'+StationName+'.rrd','N:\
+    '''ret = rrdtool.update('/var/www/rrd/'+StationName+'.rrd','N:\
     %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
     %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
     %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
@@ -878,7 +878,7 @@ for sfline in stationfile:
     int(params[41]) ,int(params[42]) ,int(params[43]) , int (params[44]), Comm_Duration ));
 
     if ret:
-        print rrdtool.error()
+        print rrdtool.error()'''
     #======================================================================================================
 
     # -------------------

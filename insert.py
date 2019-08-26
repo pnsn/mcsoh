@@ -771,7 +771,7 @@ cycle_start = time.time()
 
 #for x in range(1000):
 #Put the output in a txt file.
-sys.stdout=open("/var/log/mcsoh.log", "a+")
+# sys.stdout=open("/var/log/mcsoh.log", "a+")
 # declare the path to the input file
 #sfpath = ("C:\\Users\\Dan\\Desktop\\Radio Modbus Stuff")
 sfpath = ("/var/www/rrd")
@@ -861,7 +861,7 @@ for sfline in stationfile:
     #    Append additional values to the end of the %(int params[]) list below... Just make sure the
     #    additions identical in the RRD db and script that creates it.
     #====================================================================================================
-    '''ret = rrdtool.update('/var/www/rrd/'+StationName+'.rrd','N:\
+    ret = rrdtool.update('/var/www/rrd/'+StationName+'.rrd','N:\
     %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
     %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
     %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:\
@@ -878,7 +878,7 @@ for sfline in stationfile:
     int(params[41]) ,int(params[42]) ,int(params[43]) , int (params[44]), Comm_Duration ));
 
     if ret:
-        print rrdtool.error()'''
+        print rrdtool.error()
     #======================================================================================================
 
     # -------------------
@@ -892,5 +892,4 @@ stationfile.close()
 #clean up output...
 sys.stdout.flush()
 #Sleep time set typically the first max argument if it is 3 minutes or longer.
-time.sleep(max(180, 60 - (time.time() - cycle_start)))    # sleep until time to start next cycle
 # ... End of Script ...
